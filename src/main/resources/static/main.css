@@ -1,0 +1,178 @@
+* {
+
+    box-sizing: border-box;
+    clear: none;
+
+}
+
+
+
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+
+.AllDivs {
+
+    width: 90%;
+    border: 1px solid grey;
+    text-align: left;
+    margin-left: 5%;
+    margin-bottom: 2%;
+    padding: 5% 5%;
+
+    background-color: #f5f79e;
+    border-radius: 3px;
+
+}
+
+
+.Order {
+
+    padding: 10px 10px;
+    border: 1px solid grey;
+    background-color: #f1f2b8;
+
+    background-image: url("cheese-delicious-dinner-2232.jpg");
+    background-size: cover;
+
+
+}
+
+.Order h1 {
+
+    text-align: center;
+    color: yellow;
+
+}
+
+#orderform ul {
+
+    list-style-type: none;
+}
+
+.PizzaOptions {
+
+    display: inline-block;
+
+}
+
+.Ingredients {
+
+    width: 30%;
+    padding: 0 20px;
+    height: 220px;
+    border: 0px solid grey;
+
+
+}
+
+.Ingredient {
+
+    padding:  5px 5px;
+}
+
+.OrderButtons {
+
+    padding: 5% 5%;
+
+}
+
+.OrderButtons button {
+
+    width: 10%;
+    text-align: center;
+    margin: 0 10%;
+
+}
+
+.PizzaSizes {
+
+    float: left;
+    width: 30%;
+    padding: 0 20px;
+    height: 220px;
+    border: 0px solid grey;
+
+}
+
+.CustomerInfo {
+
+
+}
+
+.CustomerInfo input {
+
+
+}
+
+.CustomerInfo li {
+
+    padding: 5px 0;
+
+}
+
+.customer-info-listxx  {
+    list-style: none;
+    width: 100%;
+}
+
+.customer-info-listxx  li {
+    display: block;
+    float: left;
+    width: 25%;
+}
+
+
+.MessageBox {
+
+    border: 1px solid grey;
+    padding: 0 20px;
+
+}
+
+#promocode {
+
+    width: 20%;
+    margin: 0 10px;
+    text-color: red;
+    background-color: pink;
+
+}
+
+.PizzaSizeButton {
+
+    width: 40px;
+}
+
+
+.PizzaSizePrice {
+
+    margin: 0 20px;
+
+}
+
+
+.CustomerInput {
+
+}
+
+.InfoLabel {
+
+    float: left;
+    width: 50%;
+
+}
+
+.CenterButtons {
+
+    text-align: center;
+
+}
