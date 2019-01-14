@@ -19,12 +19,6 @@ public class OrderController {
     @RequestMapping(value = "/bodyorder", method = RequestMethod.POST)
     public PizzaItem bodyorder(@RequestBody OrderParams params) {
 
-        if (params != null) {
-            for (int i = 0; i < params.getIngredients().length; i++) {
-                System.out.println("ingredient: " + params.getIngredients()[i]);
-            }
-        }
-
         try {
             List<String> ingredients = new LinkedList<String>();
             for (int i = 0; i < params.getIngredients().length; i++) {
