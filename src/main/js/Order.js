@@ -9,8 +9,6 @@ import MessageBox from './MessageBox';
 
 const Order = ( props ) => {
 
-    console.log("Order admin:" + props.admin);
-
     if (props.admin) {
     return (
         <div className="AllDivs Order">

@@ -30754,7 +30754,6 @@ var Ingredient = function Ingredient(props) {
   var nameId = ingredientId + "name";
   var inventoryId = ingredientId + "inventory";
   var priceId = ingredientId + "price";
-  console.log(JSON.stringify(props));
 
   if (props.admin) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -31268,9 +31267,8 @@ function (_Component) {
       }).done(function (response) {
         _this.setState({
           ingredients: response.entity._embedded.ingredients
-        });
+        }); //    		console.log(JSON.stringify(response));
 
-        console.log(JSON.stringify(response));
       });
       console.log("loadedIngredients");
     });
@@ -31347,6 +31345,7 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "updateIngredient", function (ingredient) {
+      console.log("updateIngredient");
       var ingredientId = "ingredient" + ingredient;
       var nameId = ingredientId + "name";
       var inventoryId = ingredientId + "inventory";
@@ -31359,8 +31358,7 @@ function (_Component) {
         price: ingredientPrice,
         inventory: ingredientInventory
       };
-      _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].put('/updateingredient', data).then(function (response) {
-        console.log(response);
+      _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].put('/updateingredient', data).then(function (response) {//                 console.log(response);
       }).catch(function (error) {
         console.log(error);
       });
@@ -31447,8 +31445,6 @@ function (_Component) {
           price: _this.state.discountPrice
         };
         _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].post('/bodyorder', data).then(function (response) {
-          console.log(response);
-
           _this.setState({
             orderMessage: response.data.message
           });

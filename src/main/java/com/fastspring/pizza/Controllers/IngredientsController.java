@@ -28,9 +28,6 @@ public class IngredientsController {
     @Transactional(readOnly = false)
     public Ingredient addingredient(@RequestBody IngredientParams params) {
 
-        System.out.println("Adding: " + params.getName());
-
-
         try {
             Ingredient theIngredient = new Ingredient(params.getName(),
                     Integer.valueOf(params.getInventory()),

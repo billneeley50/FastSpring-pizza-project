@@ -64,8 +64,6 @@ public class OrderService {
     @Transactional(readOnly = false)
     public Ingredient updateingredient(IngredientParams params) {
 
-        System.out.println("Updating: " + params.getName() + " - " + params.getInventory());
-
         try {
             Ingredient theIngredient = ingredientsRepository.findByName(params.getName());
             if (theIngredient == null) {

@@ -8,7 +8,6 @@ const Ingredient = ( props ) => {
     let inventoryId = ingredientId + "inventory";
     let priceId = ingredientId + "price";
 
-	console.log(JSON.stringify(props));
     if (props.admin) {
         return (
 

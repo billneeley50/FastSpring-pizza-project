@@ -45,12 +45,9 @@ class App extends Component {
 	}
 
 	loadIngredients = () => {
-	    console.log("loadingIngredients");
 		client({method: 'GET', path: '/api/ingredients'}).done(response => {
 		    this.setState({ingredients: response.entity._embedded.ingredients});
-    		console.log(JSON.stringify(response));
 		});
-	    console.log("loadedIngredients");
 
 	}
 
@@ -119,26 +116,25 @@ class App extends Component {
 
     updateIngredient = (ingredient) => {
 
-            let ingredientId = "ingredient" + ingredient;
-            let nameId = ingredientId + "name";
-            let inventoryId = ingredientId + "inventory";
-            let priceId = ingredientId + "price";
-            let ingredientName = document.getElementById(ingredientId).value;
-            let ingredientInventory = document.getElementById(inventoryId).value;
-            let ingredientPrice = document.getElementById(priceId).value;
+        let ingredientId = "ingredient" + ingredient;
+        let nameId = ingredientId + "name";
+        let inventoryId = ingredientId + "inventory";
+        let priceId = ingredientId + "price";
+        let ingredientName = document.getElementById(ingredientId).value;
+        let ingredientInventory = document.getElementById(inventoryId).value;
+        let ingredientPrice = document.getElementById(priceId).value;
 
-            let data = {
-                name: ingredientName,
-                price: ingredientPrice,
-                inventory: ingredientInventory
-            }
+        let data = {
+            name: ingredientName,
+            price: ingredientPrice,
+            inventory: ingredientInventory
+        }
 
-            axioss.put('/updateingredient', data)
-                .then(response => {
-                    console.log(response);
-                }).catch(error => {
-                    console.log(error);
-                });
+        axioss.put('/updateingredient', data)
+            .then(response => {
+            }).catch(error => {
+                console.log(error);
+            });
 
 
     }
@@ -213,7 +209,6 @@ class App extends Component {
 
             axioss.post('/bodyorder', data)
                 .then(response => {
-                    console.log(response);
                     this.setState({orderMessage: response.data.message});
                 }).catch(error => {
                     console.log(error);
