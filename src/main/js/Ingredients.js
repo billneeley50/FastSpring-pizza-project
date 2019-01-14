@@ -1,6 +1,5 @@
 import React from 'react';
 
-import classes from './Ingredients.css';
 import Ingredient from './Ingredient';
 
 const Ingredients = (props) => (

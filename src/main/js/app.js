@@ -18,7 +18,8 @@ class App extends Component {
 		    promotions: [],
 		    discountPercent: 0,
 		    orderMessage: "",
-		    orderPrice: 0.00
+		    orderPrice: 0.00,
+		    discountPrice: 0.00
 		    };
 	}
 
@@ -26,7 +27,6 @@ class App extends Component {
 		client({method: 'GET', path: '/api/pizzaSizes'}).done(response => {
 			this.setState({pizzaSizes: response.entity._embedded.pizzaSizes});
     		this.calculatePrice();
-    		console.log("pizzaSizes loaded");
 		});
 
 		client({method: 'GET', path: '/api/ingredients'}).done(response => {
@@ -45,8 +45,6 @@ class App extends Component {
 
     calculatePrice = (event) => {
 
-        console.log("calculatePrice: " + event);
-
         let orderPrice = 0.00;
 
         this.state.pizzaSizes.map(pizzaSize => {
@@ -62,60 +60,54 @@ class App extends Component {
             let elm = document.getElementById(id);
             let checked = elm.checked;
             if (checked) {
-                console.log("Adding " + ingredient.price + " for " + ingredient.name);
                 orderPrice += ingredient.price;
             }
 
         });
 
-
+   	    let discountAmount = (orderPrice * this.state.discountPercent) / 100;
+        let discountPrice =  orderPrice - discountAmount;
         this.setState({orderPrice: orderPrice});
-
+        this.setState({discountPrice: discountPrice});
     }
 
     getPizzaSizeInfo = (size) => {
 
-        console.log("getPizzaSizeInfo: " + JSON.stringify(this.state.pizzaSizes));
-
         let pizzaSizeInfo = this.state.pizzaSizes[0];
-
         this.state.pizzaSizes.map ( pizzaSize => {
-
-            console.log("pizzaSize: " + pizzaSize.pizzaSize)
-
             if (pizzaSize.pizzaSize == size) {
-                console.log("Found: " + size);
                 pizzaSizeInfo = pizzaSize;
             }
-
         });
 
         return pizzaSizeInfo;
-
     }
+
 
     getPromo = () => {
 
-        let found = false;
+        let message = "";
+        let newDiscount = 0.
         let promoCode = document.getElementById("promocode").value;
         if (promoCode != "") {
+            let found = false;
             this.state.promotions.map( promotion => {
                 if (promotion.promotionCode == promoCode) {
-                    this.setState({discountPercent: promotion.discountPercent});
-                    this.setState({orderMessage: 'Promo code is valid.'});
-                    this.calculatePrice();
+                    newDiscount = promotion.discountPercent;
+                    message = 'Promo code is valid.  You will receive a ' +
+                               promotion.discountPercent + '% discount.'
                     found = true;
                     return;
                 }
             });
+            if (!found) {
+                message = 'Promo code not found.';
+            }
         } else {
-            this.setState({orderMessage: 'Please enter a promo code.'})
-            return;
+            message = 'Please enter a promo code.';
         }
-        if (!found) {
-            this.setState({orderMessage: 'Promo code not found.'})
-        }
-
+        this.setState({discountPercent: newDiscount});
+        this.setState({orderMessage: message}, this.calculatePrice);
     }
 
     placeOrder = () => {
@@ -124,12 +116,6 @@ class App extends Component {
         let orderPrice = 0.00;
 
         let pizzasize = 'UNKNOWN';
-        let cheese = this.getIngredient("cheese");
-        let pepperoni = this.getIngredient("pepperoni");
-        let sausage = this.getIngredient("sausage");
-        let olives = this.getIngredient("olives");
-        let mushrooms = this.getIngredient("mushrooms");
-
         let name = document.getElementById("customername").value;
         let address = document.getElementById("customeraddress").value;
         let phonenumber = document.getElementById("customernumber").value;
@@ -139,50 +125,49 @@ class App extends Component {
             let elm = document.getElementById(size);
             if (elm.checked == true) {
                 pizzasize = elm.value;
-                orderPrice = pizzaSize.price;
+            }
+        });
+
+        let ingredients = [];
+        this.state.ingredients.map(ingredient => {
+            let checked = this.getIngredient(ingredient.name);
+            if (checked) {
+                ingredients.push(ingredient.name.toLowerCase());
             }
         });
 
         if (name == "" || address == "" || phonenumber == "") {
             this.setState({orderMessage: "Please provide your name, address, and phone number"});
-        } else if (cheese == false && pepperoni == false && sausage == false && olives == false && mushrooms == false) {
+        } else if (ingredients.length == 0) {
             this.setState({orderMessage: "Please select one or more ingredients for your pizza."});
         } else {
-            this.state.ingredients.map(ingredient => {
-                console.log("An ingredient: " + ingredient.name + " - " + ingredient.price.toFixed(2));
-            });
-            this.setState({orderPrice: orderPrice});
 
-            axioss.post('/neworder', null, {params: {name, address, phonenumber,
-                                        pizzasize, cheese, pepperoni, sausage, olives, mushrooms }})
+            const data = {
+                name: name,
+                address: address,
+                phonenumber: phonenumber,
+                pizzasize: pizzasize,
+                ingredients: ingredients,
+                price: this.state.discountPrice
+            };
+
+            axioss.post('/bodyorder', data)
                 .then(response => {
-                    console.log(JSON.stringify(response));
+                    console.log(response);
                     this.setState({orderMessage: response.data.message});
-                    this.resetForm();
                 }).catch(error => {
                     console.log(error);
                     this.setState({orderMessage: error});
-            });
-
+                });
         }
-
     }
 
 
     getIngredient = (ingredient) => {
-
-        let ingredientId = "ingredient" + ingredient;
+        let ingredientId = "ingredient" + ingredient.toLowerCase();
         let checked = document.getElementById(ingredientId).checked;
         return checked;
     }
-
-    getIngredientPrice = (ingredient) => {
-
-        let ingredientId = "ingredient" + ingredient;
-        let checked = document.getElementById(ingredientId).checked;
-        return checked;
-    }
-
 
 
     resetForm = () => {
@@ -190,26 +175,16 @@ class App extends Component {
         ["customername", "customeraddress", "customernumber"].map(id => {
             document.getElementById(id).value = "";
         });
-
         this.state.ingredients.map( ingredient => {
             document.getElementById("ingredient" + ingredient.name.toLowerCase()).checked = false;
         });
-
         document.getElementById("promocode").value = "";
-
         this.setState({discountPercent: 0});
-
+        this.setState({discountPrice: 0.00});
     }
 
 
-
 	render() {
-
-	    let discountAmount = (this.state.orderPrice * this.state.discountPercent) / 100;
-	    let discountPrice = this.state.orderPrice - discountAmount;
-	    let smallPizzaPrice = 10.00
-  	    let mediumPizzaPrice = 10.00
-	    let largePizzaPrice = 10.00
 
         let smallPizzaInfo = this.getPizzaSizeInfo("SMALL");
         let mediumPizzaInfo = this.getPizzaSizeInfo("MEDIUM");
@@ -222,17 +197,13 @@ class App extends Component {
 			    resetForm={this.resetForm.bind(this)}
 			    placeOrder={this.placeOrder.bind(this)}
 			    orderMessage={this.state.orderMessage}
-			    orderPrice={discountPrice}
+			    orderPrice={this.state.discountPrice}
 			    getPromo={this.getPromo.bind(this)}
 			    discountPercent={this.state.discountPercent}
 			    calculatePrice={this.calculatePrice.bind(this)}
-   			    smallPizzaPrice={smallPizzaPrice}
-   			    mediumPizzaPrice={mediumPizzaPrice}
-   			    largePizzaPrice={largePizzaPrice}
    			    smallPizzaInfo={smallPizzaInfo}
    			    mediumPizzaInfo={mediumPizzaInfo}
    			    largePizzaInfo={largePizzaInfo}
-
 			    />
 		</div>
 		)

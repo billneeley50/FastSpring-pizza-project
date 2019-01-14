@@ -1,6 +1,5 @@
 package com.fastspring.pizza;
 
-import com.fastspring.pizza.Domain.DomainItem;
 import com.fastspring.pizza.Domain.Ingredient;
 import com.fastspring.pizza.Domain.Pizza;
 import com.fastspring.pizza.Domain.PizzaSize;

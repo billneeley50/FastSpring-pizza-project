@@ -1,4 +1,4 @@
-package com.fastspring.pizza.Domain;
+package com.fastspring.pizza;
 
 public class DomainItem {
 

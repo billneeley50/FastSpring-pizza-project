@@ -30735,17 +30735,6 @@ var CustomerInfo = function CustomerInfo(props) {
 
 /***/ }),
 
-/***/ "./src/main/js/Ingredient.css":
-/*!************************************!*\
-  !*** ./src/main/js/Ingredient.css ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
 /***/ "./src/main/js/Ingredient.js":
 /*!***********************************!*\
   !*** ./src/main/js/Ingredient.js ***!
@@ -30757,9 +30746,6 @@ var CustomerInfo = function CustomerInfo(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Ingredient_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ingredient.css */ "./src/main/js/Ingredient.css");
-/* harmony import */ var _Ingredient_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Ingredient_css__WEBPACK_IMPORTED_MODULE_1__);
-
 
 
 var Ingredient = function Ingredient(props) {
@@ -30779,17 +30765,6 @@ var Ingredient = function Ingredient(props) {
 
 /***/ }),
 
-/***/ "./src/main/js/Ingredients.css":
-/*!*************************************!*\
-  !*** ./src/main/js/Ingredients.css ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
 /***/ "./src/main/js/Ingredients.js":
 /*!************************************!*\
   !*** ./src/main/js/Ingredients.js ***!
@@ -30801,10 +30776,7 @@ var Ingredient = function Ingredient(props) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Ingredients_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ingredients.css */ "./src/main/js/Ingredients.css");
-/* harmony import */ var _Ingredients_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_Ingredients_css__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Ingredient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Ingredient */ "./src/main/js/Ingredient.js");
-
+/* harmony import */ var _Ingredient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ingredient */ "./src/main/js/Ingredient.js");
 
 
 
@@ -30812,7 +30784,7 @@ var Ingredients = function Ingredients(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "AllDivs Ingredients col span-1-of-2"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Select ingredients"), props.ingredients.map(function (ingredient) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"], {
       name: ingredient.name.toLowerCase(),
       value: ingredient.name.toLowerCase(),
       price: ingredient.price,
@@ -31182,7 +31154,6 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "calculatePrice", function (event) {
-      console.log("calculatePrice: " + event);
       var orderPrice = 0.00;
 
       _this.state.pizzaSizes.map(function (pizzaSize) {
@@ -31200,25 +31171,27 @@ function (_Component) {
         var checked = elm.checked;
 
         if (checked) {
-          console.log("Adding " + ingredient.price + " for " + ingredient.name);
           orderPrice += ingredient.price;
         }
       });
 
+      var discountAmount = orderPrice * _this.state.discountPercent / 100;
+      var discountPrice = orderPrice - discountAmount;
+
       _this.setState({
         orderPrice: orderPrice
+      });
+
+      _this.setState({
+        discountPrice: discountPrice
       });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getPizzaSizeInfo", function (size) {
-      console.log("getPizzaSizeInfo: " + JSON.stringify(_this.state.pizzaSizes));
       var pizzaSizeInfo = _this.state.pizzaSizes[0];
 
       _this.state.pizzaSizes.map(function (pizzaSize) {
-        console.log("pizzaSize: " + pizzaSize.pizzaSize);
-
         if (pizzaSize.pizzaSize == size) {
-          console.log("Found: " + size);
           pizzaSizeInfo = pizzaSize;
         }
       });
@@ -31227,39 +31200,36 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getPromo", function () {
-      var found = false;
+      var message = "";
+      var newDiscount = 0.;
       var promoCode = document.getElementById("promocode").value;
 
       if (promoCode != "") {
+        var found = false;
+
         _this.state.promotions.map(function (promotion) {
           if (promotion.promotionCode == promoCode) {
-            _this.setState({
-              discountPercent: promotion.discountPercent
-            });
-
-            _this.setState({
-              orderMessage: 'Promo code is valid.'
-            });
-
-            _this.calculatePrice();
-
+            newDiscount = promotion.discountPercent;
+            message = 'Promo code is valid.  You will receive a ' + promotion.discountPercent + '% discount.';
             found = true;
             return;
           }
         });
+
+        if (!found) {
+          message = 'Promo code not found.';
+        }
       } else {
-        _this.setState({
-          orderMessage: 'Please enter a promo code.'
-        });
-
-        return;
+        message = 'Please enter a promo code.';
       }
 
-      if (!found) {
-        _this.setState({
-          orderMessage: 'Promo code not found.'
-        });
-      }
+      _this.setState({
+        discountPercent: newDiscount
+      });
+
+      _this.setState({
+        orderMessage: message
+      }, _this.calculatePrice);
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "placeOrder", function () {
@@ -31269,17 +31239,6 @@ function (_Component) {
 
       var orderPrice = 0.00;
       var pizzasize = 'UNKNOWN';
-
-      var cheese = _this.getIngredient("cheese");
-
-      var pepperoni = _this.getIngredient("pepperoni");
-
-      var sausage = _this.getIngredient("sausage");
-
-      var olives = _this.getIngredient("olives");
-
-      var mushrooms = _this.getIngredient("mushrooms");
-
       var name = document.getElementById("customername").value;
       var address = document.getElementById("customeraddress").value;
       var phonenumber = document.getElementById("customernumber").value;
@@ -31290,7 +31249,16 @@ function (_Component) {
 
         if (elm.checked == true) {
           pizzasize = elm.value;
-          orderPrice = pizzaSize.price;
+        }
+      });
+
+      var ingredients = [];
+
+      _this.state.ingredients.map(function (ingredient) {
+        var checked = _this.getIngredient(ingredient.name);
+
+        if (checked) {
+          ingredients.push(ingredient.name.toLowerCase());
         }
       });
 
@@ -31298,39 +31266,25 @@ function (_Component) {
         _this.setState({
           orderMessage: "Please provide your name, address, and phone number"
         });
-      } else if (cheese == false && pepperoni == false && sausage == false && olives == false && mushrooms == false) {
+      } else if (ingredients.length == 0) {
         _this.setState({
           orderMessage: "Please select one or more ingredients for your pizza."
         });
       } else {
-        _this.state.ingredients.map(function (ingredient) {
-          console.log("An ingredient: " + ingredient.name + " - " + ingredient.price.toFixed(2));
-        });
-
-        _this.setState({
-          orderPrice: orderPrice
-        });
-
-        _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].post('/neworder', null, {
-          params: {
-            name: name,
-            address: address,
-            phonenumber: phonenumber,
-            pizzasize: pizzasize,
-            cheese: cheese,
-            pepperoni: pepperoni,
-            sausage: sausage,
-            olives: olives,
-            mushrooms: mushrooms
-          }
-        }).then(function (response) {
-          console.log(JSON.stringify(response));
+        var data = {
+          name: name,
+          address: address,
+          phonenumber: phonenumber,
+          pizzasize: pizzasize,
+          ingredients: ingredients,
+          price: _this.state.discountPrice
+        };
+        _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].post('/bodyorder', data).then(function (response) {
+          console.log(response);
 
           _this.setState({
             orderMessage: response.data.message
           });
-
-          _this.resetForm();
         }).catch(function (error) {
           console.log(error);
 
@@ -31342,13 +31296,7 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getIngredient", function (ingredient) {
-      var ingredientId = "ingredient" + ingredient;
-      var checked = document.getElementById(ingredientId).checked;
-      return checked;
-    });
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getIngredientPrice", function (ingredient) {
-      var ingredientId = "ingredient" + ingredient;
+      var ingredientId = "ingredient" + ingredient.toLowerCase();
       var checked = document.getElementById(ingredientId).checked;
       return checked;
     });
@@ -31367,6 +31315,10 @@ function (_Component) {
       _this.setState({
         discountPercent: 0
       });
+
+      _this.setState({
+        discountPrice: 0.00
+      });
     });
 
     _this.state = {
@@ -31376,7 +31328,8 @@ function (_Component) {
       promotions: [],
       discountPercent: 0,
       orderMessage: "",
-      orderPrice: 0.00
+      orderPrice: 0.00,
+      discountPrice: 0.00
     };
     return _this;
   }
@@ -31395,8 +31348,6 @@ function (_Component) {
         });
 
         _this2.calculatePrice();
-
-        console.log("pizzaSizes loaded");
       });
       client({
         method: 'GET',
@@ -31421,11 +31372,6 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var discountAmount = this.state.orderPrice * this.state.discountPercent / 100;
-      var discountPrice = this.state.orderPrice - discountAmount;
-      var smallPizzaPrice = 10.00;
-      var mediumPizzaPrice = 10.00;
-      var largePizzaPrice = 10.00;
       var smallPizzaInfo = this.getPizzaSizeInfo("SMALL");
       var mediumPizzaInfo = this.getPizzaSizeInfo("MEDIUM");
       var largePizzaInfo = this.getPizzaSizeInfo("LARGE");
@@ -31434,13 +31380,10 @@ function (_Component) {
         resetForm: this.resetForm.bind(this),
         placeOrder: this.placeOrder.bind(this),
         orderMessage: this.state.orderMessage,
-        orderPrice: discountPrice,
+        orderPrice: this.state.discountPrice,
         getPromo: this.getPromo.bind(this),
         discountPercent: this.state.discountPercent,
         calculatePrice: this.calculatePrice.bind(this),
-        smallPizzaPrice: smallPizzaPrice,
-        mediumPizzaPrice: mediumPizzaPrice,
-        largePizzaPrice: largePizzaPrice,
         smallPizzaInfo: smallPizzaInfo,
         mediumPizzaInfo: mediumPizzaInfo,
         largePizzaInfo: largePizzaInfo

@@ -1,6 +1,5 @@
 package com.fastspring.pizza.Domain;
 
-import com.fastspring.pizza.Domain.Ingredient;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

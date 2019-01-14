@@ -45,6 +45,15 @@ public class Pizza {
 	private String customerName;
 	private String customerAddress;
 	private String customerNumber;
+
+	public Pizza(String customerName, String customerAddress, String customerNumber, PizzaSize.PIZZASIZE pizzaSize, Double totalPrice) {
+		this.customerName = customerName;
+		this.customerAddress = customerAddress;
+		this.customerNumber = customerNumber;
+		this.pizzaSize = pizzaSize;
+		this.totalPrice = totalPrice;
+	}
+
 	private PizzaSize.PIZZASIZE pizzaSize;
 	private Double totalPrice = 0.00;
 
@@ -60,10 +69,4 @@ public class Pizza {
 
 	private Pizza() {}
 
-	public Pizza(String firstName, String lastName, String description, PizzaSize.PIZZASIZE pizzaSize) {
-		this.customerName = firstName;
-		this.customerAddress = lastName;
-		this.customerNumber = description;
-		this.pizzaSize = pizzaSize;
-	}
 }

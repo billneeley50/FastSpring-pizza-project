@@ -4,8 +4,6 @@ package com.fastspring.pizza.Domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
@@ -19,9 +17,6 @@ public class Promotion {
 	private @Id @GeneratedValue Long id;
 	private String promotionCode;
 	private Integer discountPercent = 0;
-
-	private Promotion() {}
-
 
 	public String getPromotionCode() {
 		return promotionCode;

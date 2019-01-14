@@ -1,7 +1,5 @@
 import React from 'react';
 
-import classes from './Ingredient.css';
-
 const Ingredient = ( props ) => {
 
     let ingredientId = "ingredient" + props.name;
