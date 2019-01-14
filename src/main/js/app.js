@@ -19,7 +19,8 @@ class App extends Component {
 		    discountPercent: 0,
 		    orderMessage: "",
 		    orderPrice: 0.00,
-		    discountPrice: 0.00
+		    discountPrice: 0.00,
+		    admin: false
 		    };
 	}
 
@@ -43,14 +44,23 @@ class App extends Component {
 
 	}
 
+	loadIngredients = () => {
+	    console.log("loadingIngredients");
+		client({method: 'GET', path: '/api/ingredients'}).done(response => {
+		    this.setState({ingredients: response.entity._embedded.ingredients});
+    		console.log(JSON.stringify(response));
+		});
+	    console.log("loadedIngredients");
+
+	}
+
     calculatePrice = (event) => {
 
         let orderPrice = 0.00;
-
         this.state.pizzaSizes.map(pizzaSize => {
             let size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
             let elm = document.getElementById(size);
-            if (elm.checked == true) {
+            if (elm && elm.checked == true) {
                 orderPrice = pizzaSize.price;
             }
         });
@@ -58,9 +68,11 @@ class App extends Component {
         this.state.ingredients.map(ingredient => {
             let id = "ingredient" + ingredient.name.toLowerCase();
             let elm = document.getElementById(id);
-            let checked = elm.checked;
-            if (checked) {
-                orderPrice += ingredient.price;
+            if (elm) {
+                let checked = elm.checked;
+                if (checked) {
+                    orderPrice += ingredient.price;
+                }
             }
 
         });
@@ -81,6 +93,54 @@ class App extends Component {
         });
 
         return pizzaSizeInfo;
+    }
+
+    toggleAdmin = () => {
+        this.setState({admin: !this.state.admin});
+    }
+
+    fieldChange = () => {
+    }
+
+    updateIngredients = () => {
+
+        this.state.ingredients.map(ingredient => {
+            this.updateIngredient(ingredient.name.toLowerCase());
+        });
+
+        let newIngredientName = document.getElementById("ingredientnew").value;
+        if (newIngredientName != "new") {
+            this.updateIngredient("new");
+        }
+
+        this.loadIngredients();
+
+    }
+
+    updateIngredient = (ingredient) => {
+
+            let ingredientId = "ingredient" + ingredient;
+            let nameId = ingredientId + "name";
+            let inventoryId = ingredientId + "inventory";
+            let priceId = ingredientId + "price";
+            let ingredientName = document.getElementById(ingredientId).value;
+            let ingredientInventory = document.getElementById(inventoryId).value;
+            let ingredientPrice = document.getElementById(priceId).value;
+
+            let data = {
+                name: ingredientName,
+                price: ingredientPrice,
+                inventory: ingredientInventory
+            }
+
+            axioss.put('/updateingredient', data)
+                .then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                });
+
+
     }
 
 
@@ -204,6 +264,10 @@ class App extends Component {
    			    smallPizzaInfo={smallPizzaInfo}
    			    mediumPizzaInfo={mediumPizzaInfo}
    			    largePizzaInfo={largePizzaInfo}
+   			    admin={this.state.admin}
+   			    toggleAdmin={this.toggleAdmin.bind(this)}
+   			    updateIngredients={this.updateIngredients.bind(this)}
+   			    fieldChange={this.fieldChange.bind(this)}
 			    />
 		</div>
 		)

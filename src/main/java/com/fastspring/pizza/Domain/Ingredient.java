@@ -41,6 +41,26 @@ public class Ingredient {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setInventory(Integer inventory) {
+        this.inventory = inventory;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setPizzas(Set<Pizza> pizzas) {
+        this.pizzas = pizzas;
+    }
+
     public String getName() {
         return name;
     }

@@ -9,6 +9,9 @@ import MessageBox from './MessageBox';
 
 const Order = ( props ) => {
 
+    console.log("Order admin:" + props.admin);
+
+    if (props.admin) {
     return (
         <div className="AllDivs Order">
 
@@ -26,9 +29,43 @@ const Order = ( props ) => {
                     smallPizzaInfo={props.smallPizzaInfo}
                     mediumPizzaInfo={props.mediumPizzaInfo}
                     largePizzaInfo={props.largePizzaInfo}
+                    admin={props.admin}
+                    toggleAdmin={props.toggleAdmin}
+     			    updateIngredients={props.updateIngredients}
+     			    fieldChange={props.fieldChange}
+
 
                 />
-                <CustomerInfo/>
+
+            </form>
+        </div>
+    );
+
+    } else {
+    return (
+        <div className="AllDivs Order">
+
+            <h1>Place your pizza order</h1>
+
+            <form id="orderform" action="/order" method="post">
+
+                <PizzaOptions
+                    calculatePrice={props.calculatePrice}
+                    smallPizzaPrice={props.smallPizzaPrice}
+                    mediumPizzaPrice={props.mediumPizzaPrice}
+                    largePizzaPrice={props.largePizzaPrice}
+                    ingredients={props.ingredients}
+                    calculatePrice={props.calculatePrice}
+                    smallPizzaInfo={props.smallPizzaInfo}
+                    mediumPizzaInfo={props.mediumPizzaInfo}
+                    largePizzaInfo={props.largePizzaInfo}
+                    admin={props.admin}
+                    toggleAdmin={props.toggleAdmin}
+
+                />
+                <CustomerInfo
+                    admin={props.admin}
+                />
                 <OrderButtons
                     resetForm={props.resetForm}
                     placeOrder={props.placeOrder}
@@ -37,11 +74,15 @@ const Order = ( props ) => {
                     getPromo={props.getPromo}
        			    discountPercent={props.discountPercent}
        			    calculatePrice={props.calculatePrice}
+                    admin={props.admin}
+
                 />
 
             </form>
         </div>
     );
+    }
+
 };
 
 export default Order;

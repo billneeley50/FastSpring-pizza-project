@@ -4,14 +4,6 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-<!--
-	<parent>
-		<groupId>com.greglturnquist</groupId>
-		<artifactId>react-and-spring-data-rest</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
--->
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -71,7 +63,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!-- tag::frontend-maven-plugin[] -->
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
@@ -107,7 +98,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- end::frontend-maven-plugin[] -->
 		</plugins>
 	</build>
 

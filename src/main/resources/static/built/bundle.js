@@ -30750,15 +30750,42 @@ __webpack_require__.r(__webpack_exports__);
 
 var Ingredient = function Ingredient(props) {
   var ingredientId = "ingredient" + props.name;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "Ingredient"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-    type: "checkbox",
-    id: ingredientId,
-    name: props.name,
-    key: ingredientId,
-    onChange: props.calculatePrice
-  }), props.name, " - $", props.price.toFixed(2));
+  var ingredientIdId = "ingredient" + "id";
+  var nameId = ingredientId + "name";
+  var inventoryId = ingredientId + "inventory";
+  var priceId = ingredientId + "price";
+  console.log(JSON.stringify(props));
+
+  if (props.admin) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "Ingredient"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "IngredientField",
+      type: "text",
+      id: ingredientId,
+      defaultValue: props.fullIngredient.name
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "IngredientField",
+      type: "text",
+      id: inventoryId,
+      defaultValue: props.fullIngredient.inventory
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      className: "IngredientField",
+      type: "text",
+      id: priceId,
+      defaultValue: props.fullIngredient.price.toFixed(2)
+    }));
+  } else {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "Ingredient"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "checkbox",
+      id: ingredientId,
+      name: props.name,
+      key: ingredientId,
+      onChange: props.calculatePrice
+    }), props.name, " - $", props.price.toFixed(2));
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Ingredient);
@@ -30781,17 +30808,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Ingredients = function Ingredients(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "AllDivs Ingredients col span-1-of-2"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Select ingredients"), props.ingredients.map(function (ingredient) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      name: ingredient.name.toLowerCase(),
-      value: ingredient.name.toLowerCase(),
-      price: ingredient.price,
-      key: ingredient.name.toLowerCase(),
-      calculatePrice: props.calculatePrice
-    });
-  }));
+  if (props.admin) {
+    var newingredient = {
+      name: "new",
+      price: 0.00,
+      inventory: 0
+    };
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs IngredientsUpdate col span-1-of-2",
+      onDoubleClick: props.toggleAdmin
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Update ingredients"), props.ingredients.map(function (ingredient) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        name: ingredient.name.toLowerCase(),
+        value: ingredient.name.toLowerCase(),
+        price: ingredient.price,
+        key: ingredient.name.toLowerCase(),
+        calculatePrice: props.calculatePrice,
+        admin: props.admin,
+        fullIngredient: ingredient,
+        fieldChange: props.fieldChange
+      });
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      name: "new",
+      value: "newingredient",
+      price: "0.00",
+      key: "newingredient",
+      admin: props.admin,
+      fullIngredient: newingredient
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "button",
+      onClick: props.updateIngredients,
+      value: "Update"
+    }));
+  } else {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs Ingredients col span-1-of-2",
+      onDoubleClick: props.toggleAdmin
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Select ingredients"), props.ingredients.map(function (ingredient) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredient__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        name: ingredient.name.toLowerCase(),
+        value: ingredient.name.toLowerCase(),
+        price: ingredient.price,
+        key: ingredient.name.toLowerCase(),
+        calculatePrice: props.calculatePrice,
+        admin: props.admin,
+        fullIngredient: ingredient,
+        fieldChange: props.fieldChange
+      });
+    }));
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Ingredients);
@@ -30849,29 +30914,52 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var Order = function Order(props) {
-  var _React$createElement;
+  console.log("Order admin:" + props.admin);
 
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "AllDivs Order"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Place your pizza order"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-    id: "orderform",
-    action: "/order",
-    method: "post"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], (_React$createElement = {
-    calculatePrice: props.calculatePrice,
-    smallPizzaPrice: props.smallPizzaPrice,
-    mediumPizzaPrice: props.mediumPizzaPrice,
-    largePizzaPrice: props.largePizzaPrice,
-    ingredients: props.ingredients
-  }, _defineProperty(_React$createElement, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement, "largePizzaInfo", props.largePizzaInfo), _React$createElement)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomerInfo__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_OrderButtons__WEBPACK_IMPORTED_MODULE_4__["default"], {
-    resetForm: props.resetForm,
-    placeOrder: props.placeOrder,
-    orderMessage: props.orderMessage,
-    orderPrice: props.orderPrice,
-    getPromo: props.getPromo,
-    discountPercent: props.discountPercent,
-    calculatePrice: props.calculatePrice
-  })));
+  if (props.admin) {
+    var _React$createElement;
+
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs Order"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Place your pizza order"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      id: "orderform",
+      action: "/order",
+      method: "post"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], (_React$createElement = {
+      calculatePrice: props.calculatePrice,
+      smallPizzaPrice: props.smallPizzaPrice,
+      mediumPizzaPrice: props.mediumPizzaPrice,
+      largePizzaPrice: props.largePizzaPrice,
+      ingredients: props.ingredients
+    }, _defineProperty(_React$createElement, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement, "largePizzaInfo", props.largePizzaInfo), _defineProperty(_React$createElement, "admin", props.admin), _defineProperty(_React$createElement, "toggleAdmin", props.toggleAdmin), _defineProperty(_React$createElement, "updateIngredients", props.updateIngredients), _defineProperty(_React$createElement, "fieldChange", props.fieldChange), _React$createElement))));
+  } else {
+    var _React$createElement2;
+
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs Order"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Place your pizza order"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      id: "orderform",
+      action: "/order",
+      method: "post"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], (_React$createElement2 = {
+      calculatePrice: props.calculatePrice,
+      smallPizzaPrice: props.smallPizzaPrice,
+      mediumPizzaPrice: props.mediumPizzaPrice,
+      largePizzaPrice: props.largePizzaPrice,
+      ingredients: props.ingredients
+    }, _defineProperty(_React$createElement2, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement2, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement2, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement2, "largePizzaInfo", props.largePizzaInfo), _defineProperty(_React$createElement2, "admin", props.admin), _defineProperty(_React$createElement2, "toggleAdmin", props.toggleAdmin), _React$createElement2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomerInfo__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      admin: props.admin
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_OrderButtons__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      resetForm: props.resetForm,
+      placeOrder: props.placeOrder,
+      orderMessage: props.orderMessage,
+      orderPrice: props.orderPrice,
+      getPromo: props.getPromo,
+      discountPercent: props.discountPercent,
+      calculatePrice: props.calculatePrice,
+      admin: props.admin
+    })));
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Order);
@@ -30941,20 +31029,39 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PizzaOptions = function PizzaOptions(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "AllDivs PizzaOptions row"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaSizes__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    calculatePrice: props.calculatePrice,
-    smallPizzaPrice: props.smallPizzaPrice,
-    mediumPizzaPrice: props.mediumPizzaPrice,
-    largePizzaPrice: props.largePizzaPrice,
-    smallPizzaInfo: props.smallPizzaInfo,
-    mediumPizzaInfo: props.mediumPizzaInfo,
-    largePizzaInfo: props.largePizzaInfo
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredients__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    ingredients: props.ingredients,
-    calculatePrice: props.calculatePrice
-  }));
+  if (props.admin) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs PizzaOptions row",
+      onDoubleClick: props.toggleAdmin
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredients__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      ingredients: props.ingredients,
+      calculatePrice: props.calculatePrice,
+      admin: props.admin,
+      toggleAdmin: props.toggleAdmin,
+      updateIngredients: props.updateIngredients,
+      fieldChange: props.fieldChange
+    }));
+  } else {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs PizzaOptions row",
+      onDoubleClick: props.toggleAdmin
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaSizes__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      calculatePrice: props.calculatePrice,
+      smallPizzaPrice: props.smallPizzaPrice,
+      mediumPizzaPrice: props.mediumPizzaPrice,
+      largePizzaPrice: props.largePizzaPrice,
+      smallPizzaInfo: props.smallPizzaInfo,
+      mediumPizzaInfo: props.mediumPizzaInfo,
+      largePizzaInfo: props.largePizzaInfo,
+      admin: props.admin,
+      toggleAdmin: props.toggleAdmin
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Ingredients__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      ingredients: props.ingredients,
+      calculatePrice: props.calculatePrice,
+      admin: props.admin,
+      toggleAdmin: props.toggleAdmin
+    }));
+  }
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (PizzaOptions);
@@ -31153,6 +31260,21 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "loadIngredients", function () {
+      console.log("loadingIngredients");
+      client({
+        method: 'GET',
+        path: '/api/ingredients'
+      }).done(function (response) {
+        _this.setState({
+          ingredients: response.entity._embedded.ingredients
+        });
+
+        console.log(JSON.stringify(response));
+      });
+      console.log("loadedIngredients");
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "calculatePrice", function (event) {
       var orderPrice = 0.00;
 
@@ -31160,7 +31282,7 @@ function (_Component) {
         var size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
         var elm = document.getElementById(size);
 
-        if (elm.checked == true) {
+        if (elm && elm.checked == true) {
           orderPrice = pizzaSize.price;
         }
       });
@@ -31168,10 +31290,13 @@ function (_Component) {
       _this.state.ingredients.map(function (ingredient) {
         var id = "ingredient" + ingredient.name.toLowerCase();
         var elm = document.getElementById(id);
-        var checked = elm.checked;
 
-        if (checked) {
-          orderPrice += ingredient.price;
+        if (elm) {
+          var checked = elm.checked;
+
+          if (checked) {
+            orderPrice += ingredient.price;
+          }
         }
       });
 
@@ -31197,6 +31322,48 @@ function (_Component) {
       });
 
       return pizzaSizeInfo;
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "toggleAdmin", function () {
+      _this.setState({
+        admin: !_this.state.admin
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fieldChange", function () {});
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "updateIngredients", function () {
+      _this.state.ingredients.map(function (ingredient) {
+        _this.updateIngredient(ingredient.name.toLowerCase());
+      });
+
+      var newIngredientName = document.getElementById("ingredientnew").value;
+
+      if (newIngredientName != "new") {
+        _this.updateIngredient("new");
+      }
+
+      _this.loadIngredients();
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "updateIngredient", function (ingredient) {
+      var ingredientId = "ingredient" + ingredient;
+      var nameId = ingredientId + "name";
+      var inventoryId = ingredientId + "inventory";
+      var priceId = ingredientId + "price";
+      var ingredientName = document.getElementById(ingredientId).value;
+      var ingredientInventory = document.getElementById(inventoryId).value;
+      var ingredientPrice = document.getElementById(priceId).value;
+      var data = {
+        name: ingredientName,
+        price: ingredientPrice,
+        inventory: ingredientInventory
+      };
+      _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].put('/updateingredient', data).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "getPromo", function () {
@@ -31329,7 +31496,8 @@ function (_Component) {
       discountPercent: 0,
       orderMessage: "",
       orderPrice: 0.00,
-      discountPrice: 0.00
+      discountPrice: 0.00,
+      admin: false
     };
     return _this;
   }
@@ -31386,7 +31554,11 @@ function (_Component) {
         calculatePrice: this.calculatePrice.bind(this),
         smallPizzaInfo: smallPizzaInfo,
         mediumPizzaInfo: mediumPizzaInfo,
-        largePizzaInfo: largePizzaInfo
+        largePizzaInfo: largePizzaInfo,
+        admin: this.state.admin,
+        toggleAdmin: this.toggleAdmin.bind(this),
+        updateIngredients: this.updateIngredients.bind(this),
+        fieldChange: this.fieldChange.bind(this)
       }));
     }
   }]);

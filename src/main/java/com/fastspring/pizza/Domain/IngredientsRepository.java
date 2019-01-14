@@ -12,10 +12,14 @@ import java.util.List;
 public interface IngredientsRepository extends CrudRepository<Ingredient, Long> {
 
 
-    public List<Ingredient> findByName(String name);
+    public Ingredient findByName(String name);
 
     @Modifying
     @Query("UPDATE Ingredient SET inventory = (inventory - 1) WHERE id = :id")
     public void decrementInventory(@Param("id") Long id);
+
+    @Modifying
+    @Query("UPDATE Ingredient SET inventory = :inventory, price = :price WHERE name = :name")
+    public void updateIngredient(@Param("name") String name, @Param("inventory") int inventory, @Param("price") double price);
 
 }
