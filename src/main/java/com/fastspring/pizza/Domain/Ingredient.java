@@ -3,6 +3,7 @@ package com.fastspring.pizza.Domain;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -14,9 +15,16 @@ import java.util.Set;
 
 public class Ingredient {
 
+    @Column(name="id")
     private @Id @GeneratedValue Long id;
+
+    @Column(name="name", unique = true)
     private String name;
+
+    @Column(name="inventory")
     private Integer inventory;
+
+    @Column(name="price")
     private Double price;
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -37,6 +45,7 @@ public class Ingredient {
     }
 
 
+    @JsonProperty("id")
     public Long getId() {
         return id;
     }

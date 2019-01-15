@@ -2,7 +2,9 @@ package com.fastspring.pizza.Controllers;
 
 import com.fastspring.pizza.Domain.Ingredient;
 import com.fastspring.pizza.Domain.IngredientsRepository;
+import com.fastspring.pizza.IngredientItem;
 import com.fastspring.pizza.PizzaItem;
+import com.fastspring.pizza.Services.IngredientsService;
 import com.fastspring.pizza.Services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,34 +23,21 @@ public class IngredientsController {
     IngredientsRepository ingredientsRepository;
 
     @Autowired
-    OrderService orderService;
-
+    IngredientsService ingredientsService;
 
     @RequestMapping(value = "/addingredient", method = RequestMethod.POST)
     @Transactional(readOnly = false)
-    public Ingredient addingredient(@RequestBody IngredientParams params) {
+    public IngredientItem addingredient(@RequestBody IngredientParams params) {
 
-        try {
-            Ingredient theIngredient = new Ingredient(params.getName(),
-                    Integer.valueOf(params.getInventory()),
-                    Double.valueOf(params.getPrice()));
-            ingredientsRepository.save(theIngredient);
-            return theIngredient;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            PizzaItem errorPizza = new PizzaItem();
-            errorPizza.setMessage(e.getMessage());
-            return null;
-        }
-
+        return ingredientsService.addIngredient(params);
     }
 
 
     @RequestMapping(value = "/updateingredient", method = RequestMethod.PUT)
     @Transactional(readOnly = false)
-    public Ingredient updateingredient(@RequestBody IngredientParams params) {
+    public IngredientItem updateingredient(@RequestBody IngredientParams params) {
 
-        return orderService.updateingredient(params);
+        return ingredientsService.upsertIngredient(params);
     }
 
 
