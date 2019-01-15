@@ -41,6 +41,9 @@ const Ingredients = (props) => {
 
             <br/><br/><input type="button" onClick={props.updateIngredients} value="Update"/>
 
+            <p>{props.orderMessage}</p>
+
+
 
         </div>
 

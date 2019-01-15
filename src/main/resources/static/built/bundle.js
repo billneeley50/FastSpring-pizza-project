@@ -30838,7 +30838,7 @@ var Ingredients = function Ingredients(props) {
       type: "button",
       onClick: props.updateIngredients,
       value: "Update"
-    }));
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, props.orderMessage));
   } else {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "AllDivs Ingredients col span-1-of-2",
@@ -30913,9 +30913,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var Order = function Order(props) {
-  console.log("Order admin:" + props.admin);
-
   if (props.admin) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "AllDivs Order"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Ingredients Management"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      calculatePrice: props.calculatePrice,
+      ingredients: props.ingredients,
+      smallPizzaInfo: props.smallPizzaInfo,
+      mediumPizzaInfo: props.mediumPizzaInfo,
+      largePizzaInfo: props.largePizzaInfo,
+      admin: props.admin,
+      toggleAdmin: props.toggleAdmin,
+      updateIngredients: props.updateIngredients,
+      fieldChange: props.fieldChange,
+      orderMessage: props.orderMessage
+    })));
+  } else {
     var _React$createElement;
 
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -30926,27 +30939,8 @@ var Order = function Order(props) {
       method: "post"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], (_React$createElement = {
       calculatePrice: props.calculatePrice,
-      smallPizzaPrice: props.smallPizzaPrice,
-      mediumPizzaPrice: props.mediumPizzaPrice,
-      largePizzaPrice: props.largePizzaPrice,
       ingredients: props.ingredients
-    }, _defineProperty(_React$createElement, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement, "largePizzaInfo", props.largePizzaInfo), _defineProperty(_React$createElement, "admin", props.admin), _defineProperty(_React$createElement, "toggleAdmin", props.toggleAdmin), _defineProperty(_React$createElement, "updateIngredients", props.updateIngredients), _defineProperty(_React$createElement, "fieldChange", props.fieldChange), _React$createElement))));
-  } else {
-    var _React$createElement2;
-
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: "AllDivs Order"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Place your pizza order"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-      id: "orderform",
-      action: "/order",
-      method: "post"
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOptions__WEBPACK_IMPORTED_MODULE_1__["default"], (_React$createElement2 = {
-      calculatePrice: props.calculatePrice,
-      smallPizzaPrice: props.smallPizzaPrice,
-      mediumPizzaPrice: props.mediumPizzaPrice,
-      largePizzaPrice: props.largePizzaPrice,
-      ingredients: props.ingredients
-    }, _defineProperty(_React$createElement2, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement2, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement2, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement2, "largePizzaInfo", props.largePizzaInfo), _defineProperty(_React$createElement2, "admin", props.admin), _defineProperty(_React$createElement2, "toggleAdmin", props.toggleAdmin), _React$createElement2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomerInfo__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    }, _defineProperty(_React$createElement, "calculatePrice", props.calculatePrice), _defineProperty(_React$createElement, "smallPizzaInfo", props.smallPizzaInfo), _defineProperty(_React$createElement, "mediumPizzaInfo", props.mediumPizzaInfo), _defineProperty(_React$createElement, "largePizzaInfo", props.largePizzaInfo), _defineProperty(_React$createElement, "admin", props.admin), _defineProperty(_React$createElement, "toggleAdmin", props.toggleAdmin), _React$createElement)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_CustomerInfo__WEBPACK_IMPORTED_MODULE_5__["default"], {
       admin: props.admin
     }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_OrderButtons__WEBPACK_IMPORTED_MODULE_4__["default"], {
       resetForm: props.resetForm,
@@ -31038,7 +31032,8 @@ var PizzaOptions = function PizzaOptions(props) {
       admin: props.admin,
       toggleAdmin: props.toggleAdmin,
       updateIngredients: props.updateIngredients,
-      fieldChange: props.fieldChange
+      fieldChange: props.fieldChange,
+      orderMessage: props.orderMessage
     }));
   } else {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -31046,9 +31041,6 @@ var PizzaOptions = function PizzaOptions(props) {
       onDoubleClick: props.toggleAdmin
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaSizes__WEBPACK_IMPORTED_MODULE_2__["default"], {
       calculatePrice: props.calculatePrice,
-      smallPizzaPrice: props.smallPizzaPrice,
-      mediumPizzaPrice: props.mediumPizzaPrice,
-      largePizzaPrice: props.largePizzaPrice,
       smallPizzaInfo: props.smallPizzaInfo,
       mediumPizzaInfo: props.mediumPizzaInfo,
       largePizzaInfo: props.largePizzaInfo,
@@ -31058,7 +31050,8 @@ var PizzaOptions = function PizzaOptions(props) {
       ingredients: props.ingredients,
       calculatePrice: props.calculatePrice,
       admin: props.admin,
-      toggleAdmin: props.toggleAdmin
+      toggleAdmin: props.toggleAdmin,
+      orderMessage: props.orderMessage
     }));
   }
 };
@@ -31260,17 +31253,14 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "loadIngredients", function () {
-      console.log("loadingIngredients");
       client({
         method: 'GET',
         path: '/api/ingredients'
       }).done(function (response) {
         _this.setState({
           ingredients: response.entity._embedded.ingredients
-        }); //    		console.log(JSON.stringify(response));
-
+        });
       });
-      console.log("loadedIngredients");
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "calculatePrice", function (event) {
@@ -31324,8 +31314,9 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "toggleAdmin", function () {
       _this.setState({
-        admin: !_this.state.admin
-      });
+        admin: !_this.state.admin,
+        orderMessage: ""
+      }, _this.loadIngredients());
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "fieldChange", function () {});
@@ -31342,10 +31333,13 @@ function (_Component) {
       }
 
       _this.loadIngredients();
+
+      _this.setState({
+        orderMessage: "Ingredients have been updated."
+      });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "updateIngredient", function (ingredient) {
-      console.log("updateIngredient");
       var ingredientId = "ingredient" + ingredient;
       var nameId = ingredientId + "name";
       var inventoryId = ingredientId + "inventory";
@@ -31358,8 +31352,7 @@ function (_Component) {
         price: ingredientPrice,
         inventory: ingredientInventory
       };
-      _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].put('/updateingredient', data).then(function (response) {//                 console.log(response);
-      }).catch(function (error) {
+      _Axioss__WEBPACK_IMPORTED_MODULE_2__["default"].put('/updateingredient', data).then(function (response) {}).catch(function (error) {
         console.log(error);
       });
     });

@@ -19,7 +19,7 @@ const PizzaOptions = ( props ) => {
                 toggleAdmin={props.toggleAdmin}
    			    updateIngredients={props.updateIngredients}
    			    fieldChange={props.fieldChange}
-
+   			    orderMessage={props.orderMessage}
                 />
         </div>
     );
@@ -29,9 +29,6 @@ const PizzaOptions = ( props ) => {
 
             <PizzaSizes
                 calculatePrice={props.calculatePrice}
-                smallPizzaPrice={props.smallPizzaPrice}
-                mediumPizzaPrice={props.mediumPizzaPrice}
-                largePizzaPrice={props.largePizzaPrice}
                 smallPizzaInfo={props.smallPizzaInfo}
                 mediumPizzaInfo={props.mediumPizzaInfo}
                 largePizzaInfo={props.largePizzaInfo}
@@ -44,7 +41,7 @@ const PizzaOptions = ( props ) => {
                 calculatePrice={props.calculatePrice}
                 admin={props.admin}
                 toggleAdmin={props.toggleAdmin}
-
+   			    orderMessage={props.orderMessage}
             />
 
         </div>

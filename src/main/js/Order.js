@@ -13,17 +13,11 @@ const Order = ( props ) => {
     return (
         <div className="AllDivs Order">
 
-            <h1>Place your pizza order</h1>
-
-            <form id="orderform" action="/order" method="post">
-
+            <h1>Ingredients Management</h1>
+            <div>
                 <PizzaOptions
                     calculatePrice={props.calculatePrice}
-                    smallPizzaPrice={props.smallPizzaPrice}
-                    mediumPizzaPrice={props.mediumPizzaPrice}
-                    largePizzaPrice={props.largePizzaPrice}
                     ingredients={props.ingredients}
-                    calculatePrice={props.calculatePrice}
                     smallPizzaInfo={props.smallPizzaInfo}
                     mediumPizzaInfo={props.mediumPizzaInfo}
                     largePizzaInfo={props.largePizzaInfo}
@@ -31,11 +25,9 @@ const Order = ( props ) => {
                     toggleAdmin={props.toggleAdmin}
      			    updateIngredients={props.updateIngredients}
      			    fieldChange={props.fieldChange}
-
-
+     			    orderMessage={props.orderMessage}
                 />
-
-            </form>
+            </div>
         </div>
     );
 
@@ -49,9 +41,6 @@ const Order = ( props ) => {
 
                 <PizzaOptions
                     calculatePrice={props.calculatePrice}
-                    smallPizzaPrice={props.smallPizzaPrice}
-                    mediumPizzaPrice={props.mediumPizzaPrice}
-                    largePizzaPrice={props.largePizzaPrice}
                     ingredients={props.ingredients}
                     calculatePrice={props.calculatePrice}
                     smallPizzaInfo={props.smallPizzaInfo}

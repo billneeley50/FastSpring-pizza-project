@@ -93,7 +93,7 @@ class App extends Component {
     }
 
     toggleAdmin = () => {
-        this.setState({admin: !this.state.admin});
+        this.setState({admin: !this.state.admin, orderMessage: ""}, this.loadIngredients());
     }
 
     fieldChange = () => {
@@ -111,6 +111,7 @@ class App extends Component {
         }
 
         this.loadIngredients();
+        this.setState({orderMessage: "Ingredients have been updated."});
 
     }
 
@@ -135,7 +136,6 @@ class App extends Component {
             }).catch(error => {
                 console.log(error);
             });
-
 
     }
 
