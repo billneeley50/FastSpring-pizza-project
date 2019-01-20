@@ -1,11 +1,7 @@
 package com.fastspring.pizza.Services;
 
 import com.fastspring.pizza.Controllers.IngredientParams;
-import com.fastspring.pizza.Domain.Ingredient;
-import com.fastspring.pizza.Domain.IngredientsRepository;
-import com.fastspring.pizza.Domain.Pizza;
-import com.fastspring.pizza.Domain.PizzaRepository;
-import com.fastspring.pizza.Domain.PizzaSize;
+import com.fastspring.pizza.Domain.*;
 import com.fastspring.pizza.PizzaItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,36 +25,54 @@ public class OrderService {
     @Autowired
     private IngredientsRepository ingredientsRepository;
 
+    @Autowired
+    PromotionsRepository promotionsRepository;
+
+    @Autowired
+    PizzaSizeRepository pizzaSizeRepository;
+
     @Transactional(readOnly = false)
     public Pizza placeOrder(String name,
                             String address,
                             String phonenumber,
                             double price,
-                            String pizzasize,
+                            String size,
+                            String promoCode,
+                            int discountPercent,
                             List<String> ingredients
 
-                           ) throws Exception {
+    ) throws Exception {
 
         Iterable<Ingredient> ingredients1 = ingredientsRepository.findAll();
         Iterator<Ingredient> iterator = ingredients1.iterator();
 
-        Pizza pizza = new Pizza(name, address, phonenumber, PizzaSize.PIZZASIZE.valueOf(pizzasize), price );
+        Promotion promotion = null;
+        if (promoCode != null) {
+            promotion = promotionsRepository.findByPromotionCode(promoCode);
+        }
+        PizzaSize pizzaSize = pizzaSizeRepository.findBySize(PizzaSize.PIZZASIZE.valueOf(size));
 
-        while(iterator.hasNext()) {
+        Pizza pizza = new Pizza(name, address, phonenumber, pizzaSize, promotion, discountPercent, price);
+
+        while (iterator.hasNext()) {
             Ingredient ingredient = iterator.next();
-            if (ingredient.getInventory() == 0) {
-                throw new Exception("Sorry.  We are out of " + ingredient.getName() + ".");
-            }
 
             if (ingredients.contains(ingredient.getName().toLowerCase())) {
+
+                if (ingredient.getInventory() == 0) {
+                    throw new Exception("Sorry.  We are out of " + ingredient.getName() + ".");
+                }
+
                 ingredientsRepository.decrementInventory(ingredient.getId());
+
+                pizza.addIngredient(ingredient);
+                ingredient.addPizza(pizza);
             }
         }
 
         Pizza savedPizza = pizzaRepository.save(pizza);
         return savedPizza;
     }
-
 
 
     @Transactional(readOnly = false)

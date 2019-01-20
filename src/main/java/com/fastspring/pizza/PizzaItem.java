@@ -4,8 +4,9 @@ import com.fastspring.pizza.Domain.Ingredient;
 import com.fastspring.pizza.Domain.Pizza;
 import com.fastspring.pizza.Domain.PizzaSize;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PizzaItem extends DomainItem {
 
@@ -14,7 +15,8 @@ public class PizzaItem extends DomainItem {
     private String customerNumber = "";
     private PizzaSize.PIZZASIZE pizzaSize = PizzaSize.PIZZASIZE.LARGE;
     private Double totalPrice = 0.00;
-    private Set<Ingredient> ingredients = new HashSet<>();
+    private List<Ingredient> ingredients = new LinkedList<>();
+    private String orderDate = "";
 
     public PizzaItem() {
 
@@ -60,21 +62,23 @@ public class PizzaItem extends DomainItem {
         this.totalPrice = totalPrice;
     }
 
-    public Set<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
     public PizzaItem(Pizza source) {
+        SimpleDateFormat dataFormat = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
         this.customerName = source.getCustomerName();
         this.customerAddress = source.getCustomerAddress();
         this.customerNumber = source.getCustomerNumber();
-        this.pizzaSize = source.getPizzaSize();
+        this.pizzaSize = source.getPizzaSize().getSize();
         this.totalPrice = source.getTotalPrice();
         this.ingredients = source.getIngredients();
+        this.orderDate = dataFormat.format(source.getCreateDate());
 
     }
 }

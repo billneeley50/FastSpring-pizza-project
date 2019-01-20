@@ -30902,7 +30902,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _OrderButtons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./OrderButtons */ "./src/main/js/OrderButtons.js");
 /* harmony import */ var _CustomerInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./CustomerInfo */ "./src/main/js/CustomerInfo.js");
 /* harmony import */ var _MessageBox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./MessageBox */ "./src/main/js/MessageBox.js");
+/* harmony import */ var _PizzaOrders__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./PizzaOrders */ "./src/main/js/PizzaOrders.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -30951,6 +30953,8 @@ var Order = function Order(props) {
       discountPercent: props.discountPercent,
       calculatePrice: props.calculatePrice,
       admin: props.admin
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_PizzaOrders__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      pizzaOrders: props.pizzaOrders
     })));
   }
 };
@@ -31057,6 +31061,35 @@ var PizzaOptions = function PizzaOptions(props) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (PizzaOptions);
+
+/***/ }),
+
+/***/ "./src/main/js/PizzaOrders.js":
+/*!************************************!*\
+  !*** ./src/main/js/PizzaOrders.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var PizzaOrders = function PizzaOrders(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "AllDivs PizzaOrders"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Orders"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.pizzaOrders.map(function (pizzaorder) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.orderDate), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.customerName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.promoCode), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.discountPercent, "%"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "$", pizzaorder.totalPrice.toFixed(2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", null, pizzaorder.ingredientList.map(function (ingredient) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: ingredient.name
+      }, ingredient.name);
+    }))));
+  }))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (PizzaOrders);
 
 /***/ }),
 
@@ -31263,11 +31296,22 @@ function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "loadPizzaOrders", function () {
+      client({
+        method: 'GET',
+        path: '/api/pizzas'
+      }).done(function (response) {
+        _this.setState({
+          pizzaOrders: response.entity._embedded.pizzas
+        });
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "calculatePrice", function (event) {
       var orderPrice = 0.00;
 
       _this.state.pizzaSizes.map(function (pizzaSize) {
-        var size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
+        var size = pizzaSize.size.toLowerCase() + "pizza";
         var elm = document.getElementById(size);
 
         if (elm && elm.checked == true) {
@@ -31304,7 +31348,7 @@ function (_Component) {
       var pizzaSizeInfo = _this.state.pizzaSizes[0];
 
       _this.state.pizzaSizes.map(function (pizzaSize) {
-        if (pizzaSize.pizzaSize == size) {
+        if (pizzaSize.size == size) {
           pizzaSizeInfo = pizzaSize;
         }
       });
@@ -31382,10 +31426,8 @@ function (_Component) {
       }
 
       _this.setState({
-        discountPercent: newDiscount
-      });
-
-      _this.setState({
+        discountPercent: newDiscount,
+        promoCode: promoCode,
         orderMessage: message
       }, _this.calculatePrice);
     });
@@ -31402,7 +31444,7 @@ function (_Component) {
       var phonenumber = document.getElementById("customernumber").value;
 
       _this.state.pizzaSizes.map(function (pizzaSize) {
-        var size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
+        var size = pizzaSize.size.toLowerCase() + "pizza";
         var elm = document.getElementById(size);
 
         if (elm.checked == true) {
@@ -31429,11 +31471,15 @@ function (_Component) {
           orderMessage: "Please select one or more ingredients for your pizza."
         });
       } else {
+        console.log("promoCode: " + _this.state.promoCode);
+        console.log("discountPercent: " + _this.state.discountPercent);
         var data = {
           name: name,
           address: address,
           phonenumber: phonenumber,
           pizzasize: pizzasize,
+          promocode: _this.state.promoCode,
+          discountpercent: _this.state.discountPercent,
           ingredients: ingredients,
           price: _this.state.discountPrice
         };
@@ -31441,6 +31487,10 @@ function (_Component) {
           _this.setState({
             orderMessage: response.data.message
           });
+
+          _this.resetForm();
+
+          _this.loadPizzaOrders();
         }).catch(function (error) {
           console.log(error);
 
@@ -31475,6 +31525,8 @@ function (_Component) {
       _this.setState({
         discountPrice: 0.00
       });
+
+      document.getElementById("largepizza").checked = true;
     });
 
     _this.state = {
@@ -31482,10 +31534,12 @@ function (_Component) {
       pizzaSizes: [],
       ingredients: [],
       promotions: [],
+      pizzaOrders: [],
       discountPercent: 0,
       orderMessage: "",
       orderPrice: 0.00,
       discountPrice: 0.00,
+      promoCode: "",
       admin: false
     };
     return _this;
@@ -31547,7 +31601,8 @@ function (_Component) {
         admin: this.state.admin,
         toggleAdmin: this.toggleAdmin.bind(this),
         updateIngredients: this.updateIngredients.bind(this),
-        fieldChange: this.fieldChange.bind(this)
+        fieldChange: this.fieldChange.bind(this),
+        pizzaOrders: this.state.pizzaOrders
       }));
     }
   }]);

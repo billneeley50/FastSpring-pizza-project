@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 
 @Service
 public class IngredientsService {
@@ -58,6 +62,18 @@ public class IngredientsService {
             return ingredientItem;
         }
 
+    }
+
+    public Ingredient[] getIngredients() {
+
+        Iterator iterator = ingredientsRepository.findAll().iterator();
+        LinkedList<Ingredient> ingredients = new LinkedList<>();
+
+        while(iterator.hasNext()) {
+            ingredients.add((Ingredient)iterator.next());
+        }
+
+        return ingredients.toArray(new Ingredient[]{});
     }
 
 }

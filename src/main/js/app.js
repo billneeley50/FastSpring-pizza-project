@@ -16,10 +16,12 @@ class App extends Component {
 		    pizzaSizes: [],
 		    ingredients: [],
 		    promotions: [],
+		    pizzaOrders: [],
 		    discountPercent: 0,
 		    orderMessage: "",
 		    orderPrice: 0.00,
 		    discountPrice: 0.00,
+		    promoCode: "",
 		    admin: false
 		    };
 	}
@@ -51,11 +53,19 @@ class App extends Component {
 
 	}
 
+	loadPizzaOrders = () => {
+		client({method: 'GET', path: '/api/pizzas'}).done(response => {
+		    this.setState({pizzaOrders: response.entity._embedded.pizzas});
+		});
+
+	}
+
+
     calculatePrice = (event) => {
 
         let orderPrice = 0.00;
         this.state.pizzaSizes.map(pizzaSize => {
-            let size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
+            let size = pizzaSize.size.toLowerCase() + "pizza";
             let elm = document.getElementById(size);
             if (elm && elm.checked == true) {
                 orderPrice = pizzaSize.price;
@@ -84,7 +94,7 @@ class App extends Component {
 
         let pizzaSizeInfo = this.state.pizzaSizes[0];
         this.state.pizzaSizes.map ( pizzaSize => {
-            if (pizzaSize.pizzaSize == size) {
+            if (pizzaSize.size == size) {
                 pizzaSizeInfo = pizzaSize;
             }
         });
@@ -162,8 +172,8 @@ class App extends Component {
         } else {
             message = 'Please enter a promo code.';
         }
-        this.setState({discountPercent: newDiscount});
-        this.setState({orderMessage: message}, this.calculatePrice);
+        this.setState({discountPercent: newDiscount, promoCode: promoCode, orderMessage: message},
+            this.calculatePrice);
     }
 
     placeOrder = () => {
@@ -177,7 +187,7 @@ class App extends Component {
         let phonenumber = document.getElementById("customernumber").value;
 
         this.state.pizzaSizes.map(pizzaSize => {
-            let size = pizzaSize.pizzaSize.toLowerCase() + "pizza";
+            let size = pizzaSize.size.toLowerCase() + "pizza";
             let elm = document.getElementById(size);
             if (elm.checked == true) {
                 pizzasize = elm.value;
@@ -198,11 +208,17 @@ class App extends Component {
             this.setState({orderMessage: "Please select one or more ingredients for your pizza."});
         } else {
 
+            console.log("promoCode: " + this.state.promoCode);
+            console.log("discountPercent: " + this.state.discountPercent);
+
+
             const data = {
                 name: name,
                 address: address,
                 phonenumber: phonenumber,
                 pizzasize: pizzasize,
+                promocode: this.state.promoCode,
+                discountpercent: this.state.discountPercent,
                 ingredients: ingredients,
                 price: this.state.discountPrice
             };
@@ -210,6 +226,8 @@ class App extends Component {
             axioss.post('/bodyorder', data)
                 .then(response => {
                     this.setState({orderMessage: response.data.message});
+                    this.resetForm();
+                    this.loadPizzaOrders();
                 }).catch(error => {
                     console.log(error);
                     this.setState({orderMessage: error});
@@ -236,6 +254,8 @@ class App extends Component {
         document.getElementById("promocode").value = "";
         this.setState({discountPercent: 0});
         this.setState({discountPrice: 0.00});
+
+        document.getElementById("largepizza").checked = true;
     }
 
 
@@ -263,6 +283,7 @@ class App extends Component {
    			    toggleAdmin={this.toggleAdmin.bind(this)}
    			    updateIngredients={this.updateIngredients.bind(this)}
    			    fieldChange={this.fieldChange.bind(this)}
+   			    pizzaOrders={this.state.pizzaOrders}
 			    />
 		</div>
 		)

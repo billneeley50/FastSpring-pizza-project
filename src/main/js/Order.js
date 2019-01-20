@@ -6,6 +6,7 @@ import PizzaSizes from './PizzaSizes';
 import OrderButtons from './OrderButtons';
 import CustomerInfo from './CustomerInfo';
 import MessageBox from './MessageBox';
+import PizzaOrders from './PizzaOrders'
 
 const Order = ( props ) => {
 
@@ -63,6 +64,10 @@ const Order = ( props ) => {
        			    calculatePrice={props.calculatePrice}
                     admin={props.admin}
 
+                />
+
+                <PizzaOrders
+                    pizzaOrders={props.pizzaOrders}
                 />
 
             </form>

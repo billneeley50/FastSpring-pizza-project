@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PizzaSizeRepository extends CrudRepository<PizzaSize, Long> {
 
+    public PizzaSize findBySize(PizzaSize.PIZZASIZE size);
 }

@@ -18,18 +18,34 @@ public class PizzaSize {
 	}
 
 	private @Id @GeneratedValue Long id;
-	private PIZZASIZE pizzaSize;
+	private PIZZASIZE size;
 	private Double price = 0.0;
 	private int width = 0;
 	private int slices = 0;
 
 	private PizzaSize() {}
 
-	public PizzaSize(PIZZASIZE pizzaSize, Double price, int width, int slices) {
-		this.pizzaSize = pizzaSize;
+	public PizzaSize(String size, Double price, int width, int slices) {
+		this.size = PIZZASIZE.valueOf(size);
 		this.price = price;
 		this.width = width;
 		this.slices = slices;
+	}
+
+	public PIZZASIZE getSize() {
+		return size;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getSlices() {
+		return slices;
 	}
 
 	public enum PIZZASIZE {

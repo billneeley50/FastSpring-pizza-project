@@ -3,11 +3,10 @@ package com.fastspring.pizza.Domain;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Data
 @Entity
@@ -16,7 +15,10 @@ import java.util.Set;
 public class Ingredient {
 
     @Column(name="id")
-    private @Id @GeneratedValue Long id;
+    @Id
+    @GeneratedValue
+    @Basic(optional = false)
+    private Long id;
 
     @Column(name="name", unique = true)
     private String name;
@@ -27,16 +29,12 @@ public class Ingredient {
     @Column(name="price")
     private Double price;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "ingredients")
-    private Set<Pizza> pizzas = new HashSet<>();
+    @ManyToMany(mappedBy = "ingredients")
+    @JsonIgnore
+    private List<Pizza> pizzas = new LinkedList<>();
 
 
-    private Ingredient() {}
+    public Ingredient() {}
 
     public Ingredient(String name, int inventory, double price) {
         this.name = name;
@@ -45,7 +43,6 @@ public class Ingredient {
     }
 
 
-    @JsonProperty("id")
     public Long getId() {
         return id;
     }
@@ -66,8 +63,8 @@ public class Ingredient {
         this.price = price;
     }
 
-    public void setPizzas(Set<Pizza> pizzas) {
-        this.pizzas = pizzas;
+    public void addPizza(Pizza pizza) {
+        this.pizzas.add(pizza);
     }
 
     public String getName() {
@@ -82,7 +79,7 @@ public class Ingredient {
         return price;
     }
 
-    public Set<Pizza> getPizzas() {
+    public List<Pizza> getPizzas() {
         return pizzas;
     }
 }

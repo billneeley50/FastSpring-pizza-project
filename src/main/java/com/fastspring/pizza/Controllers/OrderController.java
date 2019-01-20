@@ -25,9 +25,9 @@ public class OrderController {
                 ingredients.add(params.getIngredients()[i]);
             }
 
-
             Pizza newPizza = orderService.placeOrder(params.getName(), params.getAddress(),
-                    params.getPhonenumber(), Double.valueOf(params.getPrice()), params.getPizzasize(), ingredients);
+                    params.getPhonenumber(), Double.valueOf(params.getPrice()), params.getPizzasize(),
+                    params.getPromocode(), Integer.valueOf(params.getDiscountpercent()), ingredients);
             PizzaItem pizzaItem = new PizzaItem(newPizza);
             pizzaItem.setMessage(params.getName() + ", your " + params.getPizzasize().toLowerCase() +
                     " pizza will be delivered to " +
@@ -36,6 +36,7 @@ public class OrderController {
             return pizzaItem;
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            e.printStackTrace();
             PizzaItem errorPizza = new PizzaItem();
             errorPizza.setMessage(e.getMessage());
             return errorPizza;

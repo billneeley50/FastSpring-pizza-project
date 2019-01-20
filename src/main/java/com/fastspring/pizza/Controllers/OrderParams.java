@@ -51,11 +51,29 @@ public class OrderParams {
         this.ingredients = ingredients;
     }
 
+    public String getPromocode() {
+        return promocode;
+    }
+
+    public void setPromocode(String promocode) {
+        this.promocode = promocode;
+    }
+
+    public String getDiscountpercent() {
+        return discountpercent;
+    }
+
+    public void setDiscountpercent(String discountpercent) {
+        this.discountpercent = discountpercent;
+    }
+
     private String[] ingredients = new String[0];
     private String name = "";
     private String address = "";
     private String phonenumber = "";
     private String price = "0.00";
     private String pizzasize = "LARGE";
+    private String promocode = null;
+    private String discountpercent = "0";
 
 }
