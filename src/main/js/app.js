@@ -131,6 +131,7 @@ class App extends Component {
         let nameId = ingredientId + "name";
         let inventoryId = ingredientId + "inventory";
         let priceId = ingredientId + "price";
+
         let ingredientName = document.getElementById(ingredientId).value;
         let ingredientInventory = document.getElementById(inventoryId).value;
         let ingredientPrice = document.getElementById(priceId).value;
@@ -252,10 +253,9 @@ class App extends Component {
             document.getElementById("ingredient" + ingredient.name.toLowerCase()).checked = false;
         });
         document.getElementById("promocode").value = "";
-        this.setState({discountPercent: 0});
-        this.setState({discountPrice: 0.00});
-
         document.getElementById("largepizza").checked = true;
+
+        this.setState({discountPercent: 0, discountPrice: 0.00, promoCode: ""});
     }
 
 

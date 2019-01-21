@@ -11,6 +11,15 @@ const PizzaOrders = (props) => {
             <table>
             <tbody>
 
+                <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Promo</th>
+                    <th>Discount</th>
+                    <th>Price</th>
+                    <th>Toppings</th>
+                </tr>
+
                 {props.pizzaOrders.map(pizzaorder => (
 
                     <tr>

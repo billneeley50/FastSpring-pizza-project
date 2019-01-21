@@ -30750,15 +30750,20 @@ __webpack_require__.r(__webpack_exports__);
 
 var Ingredient = function Ingredient(props) {
   var ingredientId = "ingredient" + props.name;
-  var ingredientIdId = "ingredient" + "id";
+  var ingredientIdId = ingredientId + "id";
   var nameId = ingredientId + "name";
   var inventoryId = ingredientId + "inventory";
   var priceId = ingredientId + "price";
+  console.log("ingredient: " + props.name);
 
   if (props.admin) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "Ingredient"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      type: "hidden",
+      id: ingredientIdId,
+      value: props.fullIngredient.ingredientId
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
       className: "IngredientField",
       type: "text",
       id: ingredientId,
@@ -30811,7 +30816,8 @@ var Ingredients = function Ingredients(props) {
     var newingredient = {
       name: "new",
       price: 0.00,
-      inventory: 0
+      inventory: 0,
+      ingredientId: 0
     };
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "AllDivs IngredientsUpdate col span-1-of-2",
@@ -30821,7 +30827,7 @@ var Ingredients = function Ingredients(props) {
         name: ingredient.name.toLowerCase(),
         value: ingredient.name.toLowerCase(),
         price: ingredient.price,
-        key: ingredient.name.toLowerCase(),
+        key: ingredient.ingredientId,
         calculatePrice: props.calculatePrice,
         admin: props.admin,
         fullIngredient: ingredient,
@@ -31080,7 +31086,7 @@ __webpack_require__.r(__webpack_exports__);
 var PizzaOrders = function PizzaOrders(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "AllDivs PizzaOrders"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Orders"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, props.pizzaOrders.map(function (pizzaorder) {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Orders"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Date"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Promo"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Discount"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Price"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Toppings")), props.pizzaOrders.map(function (pizzaorder) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.orderDate), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.customerName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.promoCode), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, pizzaorder.discountPercent, "%"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "$", pizzaorder.totalPrice.toFixed(2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", null, pizzaorder.ingredientList.map(function (ingredient) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: ingredient.name
@@ -31517,16 +31523,13 @@ function (_Component) {
       });
 
       document.getElementById("promocode").value = "";
-
-      _this.setState({
-        discountPercent: 0
-      });
-
-      _this.setState({
-        discountPrice: 0.00
-      });
-
       document.getElementById("largepizza").checked = true;
+
+      _this.setState({
+        discountPercent: 0,
+        discountPrice: 0.00,
+        promoCode: ""
+      });
     });
 
     _this.state = {

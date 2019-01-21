@@ -9,7 +9,8 @@ const Ingredients = (props) => {
     let newingredient = {
         name: "new",
         price: 0.00,
-        inventory: 0
+        inventory: 0,
+        ingredientId: 0
     }
     return (
         <div className="AllDivs IngredientsUpdate col span-1-of-2" onDoubleClick={props.toggleAdmin}>
@@ -21,7 +22,7 @@ const Ingredients = (props) => {
                     name={ingredient.name.toLowerCase()}
                     value={ingredient.name.toLowerCase()}
                     price={ingredient.price}
-                    key={ingredient.name.toLowerCase()}
+                    key={ingredient.ingredientId}
                     calculatePrice={props.calculatePrice}
                     admin={props.admin}
                     fullIngredient={ingredient}

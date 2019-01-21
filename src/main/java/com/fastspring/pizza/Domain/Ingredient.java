@@ -82,4 +82,10 @@ public class Ingredient {
     public List<Pizza> getPizzas() {
         return pizzas;
     }
+
+    @Transient
+    public Long getIngredientId() {
+        return id;
+    }
+
 }
